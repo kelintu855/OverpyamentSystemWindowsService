@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+  <Alias Key="Model" Value="OverpaymentDBModel" />
+  <Alias Key="Target" Value="OverpaymentDBModel.Store" />
+  <EntityContainerMapping CdmEntityContainer="OverpaymentDBModelContainer1" StorageEntityContainer="OverpaymentDBModelStoreContainer">
+    <EntitySetMapping Name="OverPayments">
+      <EntityTypeMapping TypeName="OverpaymentDBModel.OverPayment">
+        <MappingFragment StoreEntitySet="OverPayment">
+          <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+          <ScalarProperty Name="SysSrcSyncDate" ColumnName="SysSrcSyncDate" />
+          <ScalarProperty Name="OverPaymentAmt" ColumnName="OverPaymentAmt" />
+          <ScalarProperty Name="BalanceAmt" ColumnName="BalanceAmt" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+          <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+          <ScalarProperty Name="OverPaymentID" ColumnName="OverPaymentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Members">
+      <EntityTypeMapping TypeName="OverpaymentDBModel.Member">
+        <MappingFragment StoreEntitySet="Member">
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Claims">
+      <EntityTypeMapping TypeName="OverpaymentDBModel.Claim">
+        <MappingFragment StoreEntitySet="Claim">
+          <ScalarProperty Name="SysSrcSyncDate" ColumnName="SysSrcSyncDate" />
+          <ScalarProperty Name="IsOverPayment" ColumnName="IsOverPayment" />
+          <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+          <ScalarProperty Name="ClaimAmt" ColumnName="ClaimAmt" />
+          <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

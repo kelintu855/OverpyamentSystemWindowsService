@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OverpaymentDBModel.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Claim">
+          <Key>
+            <PropertyRef Name="ClaimNumber" />
+          </Key>
+          <Property Name="ClaimNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ClaimAmt" Type="decimal" Precision="53" Scale="0" Nullable="false" />
+          <Property Name="MemberID" Type="integer" Nullable="false" />
+          <Property Name="IsOverPayment" Type="bit" Nullable="false" />
+          <Property Name="SysSrcSyncDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Name="MemberId" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="State" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OverPayment">
+          <Key>
+            <PropertyRef Name="OverPaymentID" />
+          </Key>
+          <Property Name="OverPaymentID" Type="integer" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaimNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="MemberId" Type="integer" Nullable="false" />
+          <Property Name="BalanceAmt" Type="decimal" Precision="53" Scale="0" Nullable="false" />
+          <Property Name="OverPaymentAmt" Type="decimal" Precision="53" Scale="0" Nullable="false" />
+          <Property Name="SysSrcSyncDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Claim_0_0">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="Claim" Type="Self.Claim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Claim">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OverPayment_0_0">
+          <End Role="Claim" Type="Self.Claim" Multiplicity="1" />
+          <End Role="OverPayment" Type="Self.OverPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Claim">
+              <PropertyRef Name="ClaimNumber" />
+            </Principal>
+            <Dependent Role="OverPayment">
+              <PropertyRef Name="ClaimNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OverPayment_1_0">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="OverPayment" Type="Self.OverPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="OverPayment">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OverpaymentDBModelStoreContainer">
+          <EntitySet Name="Claim" EntityType="Self.Claim" store:Type="Tables" />
+          <EntitySet Name="Member" EntityType="Self.Member" store:Type="Tables" />
+          <EntitySet Name="OverPayment" EntityType="Self.OverPayment" store:Type="Tables" />
+          <AssociationSet Name="FK_Claim_0_0" Association="Self.FK_Claim_0_0">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Claim" EntitySet="Claim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OverPayment_0_0" Association="Self.FK_OverPayment_0_0">
+            <End Role="Claim" EntitySet="Claim" />
+            <End Role="OverPayment" EntitySet="OverPayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OverPayment_1_0" Association="Self.FK_OverPayment_1_0">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="OverPayment" EntitySet="OverPayment" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="OverpaymentDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="OverpaymentDBModelContainer1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="OverPayments" EntityType="OverpaymentDBModel.OverPayment" />
+          <EntitySet Name="Members" EntityType="OverpaymentDBModel.Member" />
+          <AssociationSet Name="FK_OverPayment_1_0" Association="OverpaymentDBModel.FK_OverPayment_1_0">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="OverPayment" EntitySet="OverPayments" />
+          </AssociationSet>
+          <EntitySet Name="Claims" EntityType="OverpaymentDBModel.Claim" />
+          <AssociationSet Name="FK_Claim_0_0" Association="OverpaymentDBModel.FK_Claim_0_0">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Claim" EntitySet="Claims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OverPayment_0_0" Association="OverpaymentDBModel.FK_OverPayment_0_0">
+            <End Role="Claim" EntitySet="Claims" />
+            <End Role="OverPayment" EntitySet="OverPayments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="OverPayment">
+          <Key>
+            <PropertyRef Name="OverPaymentID" />
+          </Key>
+          <Property Name="OverPaymentID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaimNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MemberId" Type="Int64" Nullable="false" />
+          <Property Name="BalanceAmt" Type="Decimal" Nullable="false" Precision="53" Scale="0" />
+          <Property Name="OverPaymentAmt" Type="Decimal" Nullable="false" Precision="53" Scale="0" />
+          <Property Name="SysSrcSyncDate" Type="DateTime" Nullable="false" />
+          <Property Name="LastUpdated" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Member" Relationship="OverpaymentDBModel.FK_OverPayment_1_0" FromRole="OverPayment" ToRole="Member" />
+          <NavigationProperty Name="Claim" Relationship="OverpaymentDBModel.FK_OverPayment_0_0" FromRole="OverPayment" ToRole="Claim" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Name="MemberId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OverPayments" Relationship="OverpaymentDBModel.FK_OverPayment_1_0" FromRole="Member" ToRole="OverPayment" />
+          <NavigationProperty Name="Claims" Relationship="OverpaymentDBModel.FK_Claim_0_0" FromRole="Member" ToRole="Claim" />
+        </EntityType>
+        <Association Name="FK_OverPayment_1_0">
+          <End Type="OverpaymentDBModel.Member" Role="Member" Multiplicity="1" />
+          <End Type="OverpaymentDBModel.OverPayment" Role="OverPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="OverPayment">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Claim">
+          <Key>
+            <PropertyRef Name="ClaimNumber" />
+          </Key>
+          <Property Name="ClaimNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimAmt" Type="Decimal" Nullable="false" Precision="53" Scale="0" />
+          <Property Name="MemberID" Type="Int64" Nullable="false" />
+          <Property Name="IsOverPayment" Type="Boolean" Nullable="false" />
+          <Property Name="SysSrcSyncDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Member" Relationship="OverpaymentDBModel.FK_Claim_0_0" FromRole="Claim" ToRole="Member" />
+          <NavigationProperty Name="OverPayments" Relationship="OverpaymentDBModel.FK_OverPayment_0_0" FromRole="Claim" ToRole="OverPayment" />
+        </EntityType>
+        <Association Name="FK_Claim_0_0">
+          <End Type="OverpaymentDBModel.Member" Role="Member" Multiplicity="1" />
+          <End Type="OverpaymentDBModel.Claim" Role="Claim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberId" />
+            </Principal>
+            <Dependent Role="Claim">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OverPayment_0_0">
+          <End Type="OverpaymentDBModel.Claim" Role="Claim" Multiplicity="1" />
+          <End Type="OverpaymentDBModel.OverPayment" Role="OverPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Claim">
+              <PropertyRef Name="ClaimNumber" />
+            </Principal>
+            <Dependent Role="OverPayment">
+              <PropertyRef Name="ClaimNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="OverpaymentDBModel" />
+        <Alias Key="Target" Value="OverpaymentDBModel.Store" />
+        <EntityContainerMapping CdmEntityContainer="OverpaymentDBModelContainer1" StorageEntityContainer="OverpaymentDBModelStoreContainer">
+          <EntitySetMapping Name="OverPayments">
+            <EntityTypeMapping TypeName="OverpaymentDBModel.OverPayment">
+              <MappingFragment StoreEntitySet="OverPayment">
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="SysSrcSyncDate" ColumnName="SysSrcSyncDate" />
+                <ScalarProperty Name="OverPaymentAmt" ColumnName="OverPaymentAmt" />
+                <ScalarProperty Name="BalanceAmt" ColumnName="BalanceAmt" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+                <ScalarProperty Name="OverPaymentID" ColumnName="OverPaymentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="OverpaymentDBModel.Member">
+              <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Claims">
+            <EntityTypeMapping TypeName="OverpaymentDBModel.Claim">
+              <MappingFragment StoreEntitySet="Claim">
+                <ScalarProperty Name="SysSrcSyncDate" ColumnName="SysSrcSyncDate" />
+                <ScalarProperty Name="IsOverPayment" ColumnName="IsOverPayment" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="ClaimAmt" ColumnName="ClaimAmt" />
+                <ScalarProperty Name="ClaimNumber" ColumnName="ClaimNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
