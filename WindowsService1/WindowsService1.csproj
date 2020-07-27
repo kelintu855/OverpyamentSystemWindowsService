@@ -117,6 +117,7 @@
     <Compile Include="Member.cs">
       <DependentUpon>OverpaymentDBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Request\OverpaymentRequest.cs" />
     <Compile Include="OverPayment.cs">
       <DependentUpon>OverpaymentDBModel.tt</DependentUpon>
     </Compile>
